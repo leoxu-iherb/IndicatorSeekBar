@@ -50,6 +50,7 @@
             <enum name="oval" value="1" />
             <enum name="square" value="2" />
             <enum name="divider" value="3" /> <!--show tickMarks shape as vertical line , line'size is 1 dp.-->
+            <enum name="round_square" value="4" />
         </attr>
         //tickTexts
         <attr name="isb_show_tick_texts" format="boolean" /><!--show the text below tick or not, default false-->
@@ -62,5 +63,11 @@
             <enum name="sans" value="2" />
             <enum name="serif" value="3" />
         </attr>
+
+        //customized added
+        <attr name="isb_selected_tick_marks_color" format="reference|color" /><!--set texts' color, default #FF4081-->
+        <attr name="isb_unselected_tick_marks_color" format="reference|color" /><!--set texts' color, default #FF4081-->
+        <attr name="isb_tick_marks_size_height_low" format="dimension|reference" /><!--set the tick height low-->
+        <attr name="isb_tick_marks_size_height_high" format="dimension|reference" /><!--set the tick height high-->
     </declare-styleable>
 </resources>

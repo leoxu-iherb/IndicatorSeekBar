@@ -70,7 +70,7 @@ public class Builder {
     //tickMarks
     int tickCount = 0;
     int showTickMarksType = TickMarkType.NONE;
-    int tickMarksColor = Color.parseColor("#FF4081");
+    int tickMarksColor = Color.parseColor("#cccccc");
     int tickMarksSize = 0;
     Drawable tickMarksDrawable = null;
     boolean tickMarksEndsHide = false;

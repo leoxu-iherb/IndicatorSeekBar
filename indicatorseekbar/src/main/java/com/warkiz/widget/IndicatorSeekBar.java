@@ -6,6 +6,7 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -120,6 +121,9 @@ public class IndicatorSeekBar extends View {
     private boolean mTickMarksEndsHide;//true if want to hide the tickMarks which in both side ends of seek bar
     private boolean mTickMarksSweptHide;//true if want to hide the tickMarks which on thumb left.
     private int mTickMarksSize;//the width of tickMark
+    private int mTickMarksSizeHeightLow;//the height of square low sized
+    private int mTickMarksSizeHeightHigh;//the height of square high sized
+
     //track
     private boolean mTrackRoundedCorners;
     private RectF mProgressTrack;//the background track on the thumb start
@@ -219,14 +223,16 @@ public class IndicatorSeekBar extends View {
         mTicksCount = ta.getInt(R.styleable.IndicatorSeekBar_isb_ticks_count, builder.tickCount);
         mShowTickMarksType = ta.getInt(R.styleable.IndicatorSeekBar_isb_show_tick_marks_type, builder.showTickMarksType);
         mTickMarksSize = ta.getDimensionPixelSize(R.styleable.IndicatorSeekBar_isb_tick_marks_size, builder.tickMarksSize);
-        initTickMarksColor(ta.getColorStateList(R.styleable.IndicatorSeekBar_isb_tick_marks_color), builder.tickMarksColor);
+        mTickMarksSizeHeightLow = ta.getDimensionPixelSize(R.styleable.IndicatorSeekBar_isb_tick_marks_size_height_low, builder.tickMarksSize);
+        mTickMarksSizeHeightHigh = ta.getDimensionPixelSize(R.styleable.IndicatorSeekBar_isb_tick_marks_size_height_high, builder.tickMarksSize);
+        //initTickMarksColor(ta.getColorStateList(R.styleable.IndicatorSeekBar_isb_tick_marks_color), builder.tickMarksColor);
         mTickMarksDrawable = ta.getDrawable(R.styleable.IndicatorSeekBar_isb_tick_marks_drawable);
         mTickMarksSweptHide = ta.getBoolean(R.styleable.IndicatorSeekBar_isb_tick_marks_swept_hide, builder.tickMarksSweptHide);
         mTickMarksEndsHide = ta.getBoolean(R.styleable.IndicatorSeekBar_isb_tick_marks_ends_hide, builder.tickMarksEndsHide);
         //tickTexts
         mShowTickText = ta.getBoolean(R.styleable.IndicatorSeekBar_isb_show_tick_texts, builder.showTickText);
         mTickTextsSize = ta.getDimensionPixelSize(R.styleable.IndicatorSeekBar_isb_tick_texts_size, builder.tickTextsSize);
-        initTickTextsColor(ta.getColorStateList(R.styleable.IndicatorSeekBar_isb_tick_texts_color), builder.tickTextsColor);
+        //initTickTextsColor(ta.getColorStateList(R.styleable.IndicatorSeekBar_isb_tick_texts_color), builder.tickTextsColor);
         mTickTextsCustomArray = ta.getTextArray(R.styleable.IndicatorSeekBar_isb_tick_texts_array);
         initTextsTypeface(ta.getInt(R.styleable.IndicatorSeekBar_isb_tick_texts_typeface, -1), builder.tickTextsTypeFace);
         //indicator
@@ -234,6 +240,10 @@ public class IndicatorSeekBar extends View {
         mIndicatorColor = ta.getColor(R.styleable.IndicatorSeekBar_isb_indicator_color, builder.indicatorColor);
         mIndicatorTextSize = ta.getDimensionPixelSize(R.styleable.IndicatorSeekBar_isb_indicator_text_size, builder.indicatorTextSize);
         mIndicatorTextColor = ta.getColor(R.styleable.IndicatorSeekBar_isb_indicator_text_color, builder.indicatorTextColor);
+        //customized attrs
+        mSelectedTickMarksColor = ta.getColor(R.styleable.IndicatorSeekBar_isb_selected_tick_marks_color, builder.indicatorTextColor);
+        mUnSelectedTickMarksColor = ta.getColor(R.styleable.IndicatorSeekBar_isb_unselected_tick_marks_color, builder.indicatorTextColor);
+
         int indicatorContentViewId = ta.getResourceId(R.styleable.IndicatorSeekBar_isb_indicator_content_layout, 0);
         if (indicatorContentViewId > 0) {
             mIndicatorContentView = View.inflate(mContext, indicatorContentViewId, null);
@@ -538,9 +548,9 @@ public class IndicatorSeekBar extends View {
                 continue;
             }
             if (i <= thumbPosFloat) {
-                mStockPaint.setColor(getLeftSideTickColor());
+                mStockPaint.setColor(Color.parseColor("#458500"));
             } else {
-                mStockPaint.setColor(getRightSideTickColor());
+                mStockPaint.setColor(Color.parseColor("#cccccc"));
             }
             if (mTickMarksDrawable != null) {
                 if (mSelectTickMarksBitmap == null || mUnselectTickMarksBitmap == null) {
@@ -570,6 +580,21 @@ public class IndicatorSeekBar extends View {
                 canvas.drawRect(mTickMarksX[i] - rectWidth, mProgressTrack.top - dividerTickHeight / 2.0f, mTickMarksX[i] + rectWidth, mProgressTrack.top + dividerTickHeight / 2.0f, mStockPaint);
             } else if (mShowTickMarksType == TickMarkType.SQUARE) {
                 canvas.drawRect(mTickMarksX[i] - mTickMarksSize / 2.0f, mProgressTrack.top - mTickMarksSize / 2.0f, mTickMarksX[i] + mTickMarksSize / 2.0f, mProgressTrack.top + mTickMarksSize / 2.0f, mStockPaint);
+            }else if (mShowTickMarksType == TickMarkType.ROUND_SQUARE) {
+                float top = 0, bottom = 0;
+                if ( i == 0 || i == 5 || i == 10) {
+                    top = mProgressTrack.top - mTickMarksSizeHeightHigh / 2.0f;
+                    bottom = mProgressTrack.top + mTickMarksSizeHeightHigh / 2.0f;
+                } else {
+                    top = mProgressTrack.top - mTickMarksSizeHeightLow / 2.0f;
+                    bottom = mProgressTrack.top + mTickMarksSizeHeightLow / 2.0f;
+                }
+                canvas.drawRoundRect(
+                        new RectF(mTickMarksX[i] - mTickMarksSize / 2.0f
+                                , top
+                                , mTickMarksX[i] + mTickMarksSize / 2.0f
+                                , bottom)
+                        , 8, 8, mStockPaint);
             }
         }
     }
@@ -1508,7 +1533,7 @@ public class IndicatorSeekBar extends View {
         this.mTickTextsSize = builder.tickTextsSize;
         this.mTickTextsCustomArray = builder.tickTextsCustomArray;
         this.mTextsTypeface = builder.tickTextsTypeFace;
-        initTickTextsColor(builder.tickTextsColorStateList, builder.tickTextsColor);
+        //initTickTextsColor(builder.tickTextsColorStateList, builder.tickTextsColor);
     }
 
     /**
