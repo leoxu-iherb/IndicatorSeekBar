@@ -6,7 +6,6 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -29,9 +28,12 @@ import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * created by zhuangguangquan on 2017/9/1
@@ -98,6 +100,8 @@ public class IndicatorSeekBar extends View {
     private int mUnselectedTextsColor;//the color for the tick texts those thumb haven't reach.
     private int mHoveredTextColor;//the color for the tick texts which below/above thumb.
     private CharSequence[] mTickTextsCustomArray;
+    private CharSequence[] mTickHighMarksArray;
+    private List<Integer> mTickHighMarksArrayInt = new ArrayList<Integer>();
     //indicator
     private Indicator mIndicator;//the pop window above the seek bar
     private int mIndicatorColor;
@@ -234,6 +238,8 @@ public class IndicatorSeekBar extends View {
         mTickTextsSize = ta.getDimensionPixelSize(R.styleable.IndicatorSeekBar_isb_tick_texts_size, builder.tickTextsSize);
         //initTickTextsColor(ta.getColorStateList(R.styleable.IndicatorSeekBar_isb_tick_texts_color), builder.tickTextsColor);
         mTickTextsCustomArray = ta.getTextArray(R.styleable.IndicatorSeekBar_isb_tick_texts_array);
+        mTickHighMarksArray = ta.getTextArray(R.styleable.IndicatorSeekBar_isb_tick_high_marks_array);
+        convertHighMarksArrayToIntArray();
         initTextsTypeface(ta.getInt(R.styleable.IndicatorSeekBar_isb_tick_texts_typeface, -1), builder.tickTextsTypeFace);
         //indicator
         mShowIndicatorType = ta.getInt(R.styleable.IndicatorSeekBar_isb_show_indicator, builder.showIndicatorType);
@@ -253,6 +259,19 @@ public class IndicatorSeekBar extends View {
             mIndicatorTopContentView = View.inflate(mContext, indicatorTopContentLayoutId, null);
         }
         ta.recycle();
+    }
+
+    private void convertHighMarksArrayToIntArray() {
+        try {
+            if (mTickHighMarksArray != null && mTickHighMarksArray.length > 0) {
+                for (CharSequence element: mTickHighMarksArray) {
+                    mTickHighMarksArrayInt.add(Integer.parseInt(element.toString()));
+                }
+            }
+        } catch (Exception e) {
+            //Do not handle convert error, just return convert empty array
+        }
+
     }
 
     private void initParams() {
@@ -548,9 +567,9 @@ public class IndicatorSeekBar extends View {
                 continue;
             }
             if (i <= thumbPosFloat) {
-                mStockPaint.setColor(Color.parseColor("#458500"));
+                mStockPaint.setColor(mSelectedTickMarksColor);
             } else {
-                mStockPaint.setColor(Color.parseColor("#cccccc"));
+                mStockPaint.setColor(mUnSelectedTickMarksColor);
             }
             if (mTickMarksDrawable != null) {
                 if (mSelectTickMarksBitmap == null || mUnselectTickMarksBitmap == null) {
@@ -582,7 +601,7 @@ public class IndicatorSeekBar extends View {
                 canvas.drawRect(mTickMarksX[i] - mTickMarksSize / 2.0f, mProgressTrack.top - mTickMarksSize / 2.0f, mTickMarksX[i] + mTickMarksSize / 2.0f, mProgressTrack.top + mTickMarksSize / 2.0f, mStockPaint);
             }else if (mShowTickMarksType == TickMarkType.ROUND_SQUARE) {
                 float top = 0, bottom = 0;
-                if ( i == 0 || i == 5 || i == 10) {
+                if ( mTickHighMarksArrayInt != null && mTickHighMarksArrayInt.contains(i)) {
                     top = mProgressTrack.top - mTickMarksSizeHeightHigh / 2.0f;
                     bottom = mProgressTrack.top + mTickMarksSizeHeightHigh / 2.0f;
                 } else {
@@ -1148,6 +1167,10 @@ public class IndicatorSeekBar extends View {
             mSelectTickMarksBitmap = mUnselectTickMarksBitmap;
         }
 
+    }
+
+    public void setTickHighMarksArrayInt(List<Integer> mTickHighMarksArrayInt) {
+        this.mTickHighMarksArrayInt = mTickHighMarksArrayInt;
     }
 
     @Override

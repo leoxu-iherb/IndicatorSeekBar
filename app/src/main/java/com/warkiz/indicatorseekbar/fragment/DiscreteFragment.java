@@ -10,6 +10,10 @@ import com.warkiz.widget.IndicatorSeekBar;
 import com.warkiz.widget.OnSeekChangeListener;
 import com.warkiz.widget.SeekParams;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * created by zhuangguangquan on  2017/9/6
  */
@@ -23,6 +27,9 @@ public class DiscreteFragment extends BaseFragment {
 
     @Override
     protected void initView(View root) {
+        IndicatorSeekBar seekBar = root.findViewById(R.id.seek_bar);
+        List<Integer> highMarksArr = new ArrayList<>(Arrays.asList(0, 5, 10));
+        seekBar.setTickHighMarksArrayInt(highMarksArr);
         //customTickTexts
 //        IndicatorSeekBar seekBar = root.findViewById(R.id.custom_text);
 //        String[] arr = {"A", "a", "B", "b", "C", "c", "D"};
