@@ -1359,19 +1359,19 @@ public class IndicatorSeekBar extends View {
     }
 
     private void updateIndicator() {
-//        if (mIndicatorStayAlways) {
+        if (mIndicatorStayAlways) {
             updateStayIndicator();
-//        } else {
-//            if (mIndicator == null) {
-//                return;
-//            }
-//            mIndicator.iniPop();
-//            if (mIndicator.isShowing()) {
-//                mIndicator.update(getThumbCenterX());
-//            } else {
-//                mIndicator.show(getThumbCenterX());
-//            }
-//        }
+        } else {
+            if (mIndicator == null) {
+                return;
+            }
+            mIndicator.iniPop();
+            if (mIndicator.isShowing()) {
+                mIndicator.update(getThumbCenterX());
+            } else {
+                mIndicator.show(getThumbCenterX());
+            }
+        }
     }
 
     private void initIndicatorContentView() {
