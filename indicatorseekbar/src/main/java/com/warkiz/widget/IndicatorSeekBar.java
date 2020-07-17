@@ -85,6 +85,11 @@ public class IndicatorSeekBar extends View {
     private boolean mOnlyThumbDraggable;//only drag the seek bar's thumb can be change the progress
     private boolean mSeekSmoothly;//seek continuously
     private float[] mProgressArr;//save the progress which at tickMark position.
+
+    public boolean ismR2L() {
+        return mR2L;
+    }
+
     private boolean mR2L;//right to left,compat local problem.
     //tick texts
     private boolean mShowTickText;//the palace where the tick text show .
@@ -1413,7 +1418,12 @@ public class IndicatorSeekBar extends View {
             indicatorOffset = 0;
             arrowOffset = -(int) (measuredWidth / 2 - thumbCenterX);
         } else {
-            indicatorOffset = (int) (getThumbCenterX() - measuredWidth / 2);
+            if(mR2L) {
+                indicatorOffset = (int) (mScreenWidth - getThumbCenterX() - measuredWidth / 2);
+            } else {
+                indicatorOffset = (int) (getThumbCenterX() - measuredWidth / 2);
+            }
+
             arrowOffset = 0;
         }
 

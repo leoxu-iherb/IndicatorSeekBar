@@ -205,7 +205,11 @@ public class Indicator {
     }
 
     void updateIndicatorLocation(int offset) {
-        setMargin(mIndicatorView, offset, -1, -1, -1);
+        if (mSeekBar.ismR2L()) {
+            setMargin(mIndicatorView, -1, -1, offset, -1);
+        } else {
+            setMargin(mIndicatorView, offset, -1, -1, -1);
+        }
     }
 
     void updateArrowViewLocation(int offset) {
