@@ -1728,9 +1728,21 @@ public class IndicatorSeekBar extends View {
      */
     public void setR2L(boolean isR2L) {
         this.mR2L = isR2L;
+        switchColor(isR2L);
         requestLayout();
         invalidate();
         updateStayIndicator();
+    }
+
+    private void switchColor(boolean isR2L) {
+        if (isR2L) {
+            int temp = mUnselectedTextsColor;
+            mUnselectedTextsColor = mSelectedTextsColor;
+            mSelectedTextsColor = temp;
+            temp = mUnSelectedTickMarksColor;
+            mUnSelectedTickMarksColor = mSelectedTickMarksColor;
+            mSelectedTickMarksColor = temp;
+        }
     }
 
     /**

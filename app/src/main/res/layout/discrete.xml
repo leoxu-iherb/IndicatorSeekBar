@@ -28,7 +28,7 @@
                 app:isb_track_progress_size="4dp"
                 app:isb_thumb_size="24dp"
                 app:isb_max="10"
-                app:isb_progress="30"
+                app:isb_progress="0"
                 app:isb_indicator_text_size="12sp"
                 app:isb_tick_marks_size_height_low="12dp"
                 app:isb_tick_marks_size_height_high="16dp"

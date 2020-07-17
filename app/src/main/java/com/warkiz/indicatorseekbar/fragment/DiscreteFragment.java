@@ -13,6 +13,8 @@ import com.warkiz.widget.SeekParams;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * created by zhuangguangquan on  2017/9/6
@@ -30,6 +32,22 @@ public class DiscreteFragment extends BaseFragment {
         IndicatorSeekBar seekBar = root.findViewById(R.id.seek_bar);
         List<Integer> highMarksArr = new ArrayList<>(Arrays.asList(0, 5, 10));
         seekBar.setTickHighMarksArrayInt(highMarksArr);
+        seekBar.setOnSeekChangeListener(new OnSeekChangeListener() {
+            @Override
+            public void onSeeking(SeekParams seekParams) {
+                Logger.getLogger("123").log(Level.INFO, "123");
+            }
+
+            @Override
+            public void onStartTrackingTouch(IndicatorSeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
+
+            }
+        });
         //customTickTexts
 //        IndicatorSeekBar seekBar = root.findViewById(R.id.custom_text);
 //        String[] arr = {"A", "a", "B", "b", "C", "c", "D"};
