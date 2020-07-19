@@ -1,10 +1,12 @@
 package com.warkiz.indicatorseekbar;
 
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 import android.widget.TextView;
 
 import com.warkiz.indicatorseekbar.donation.BaseActivity;
@@ -17,6 +19,7 @@ import com.warkiz.indicatorseekbar.fragment.JavaBuildFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * created by zhuangguangquan on 2017/9/6
@@ -34,6 +37,12 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+//        getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+    }
+
+    @Override
     protected void initCreate() {
         super.initCreate();
         initFragment();
@@ -43,6 +52,8 @@ public class MainActivity extends BaseActivity {
     private void initFragment() {
 //        mFragmentList.add(new ContinuousFragment());
         mFragmentList.add(new DiscreteFragment());
+        Locale.setDefault(new Locale("ar"));
+
 //        mFragmentList.add(new CustomFragment());
 //        mFragmentList.add(new JavaBuildFragment());
 //        mFragmentList.add(new IndicatorFragment());

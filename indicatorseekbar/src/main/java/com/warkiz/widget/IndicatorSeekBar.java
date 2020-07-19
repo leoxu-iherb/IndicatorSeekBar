@@ -692,7 +692,7 @@ public class IndicatorSeekBar extends View {
         canvas.drawText(getProgressString(mProgress), getThumbCenterX(), mThumbTextY, mTextPaint);
     }
 
-    private float getThumbCenterX() {
+    public float getThumbCenterX() {
         if (mR2L) {
             return mBackgroundTrack.right;
         }

@@ -232,9 +232,18 @@ public class Indicator {
         }
         refreshProgressText();
         if (mIndicatorPopW != null) {
-            mIndicatorPopW.getContentView().measure(0, 0);
-            mIndicatorPopW.update(mSeekBar, (int) (touchX - mIndicatorPopW.getContentView().getMeasuredWidth() / 2),
-                    -(mSeekBar.getMeasuredHeight() + mIndicatorPopW.getContentView().getMeasuredHeight() - mSeekBar.getPaddingTop() /*- mSeekBar.getTextHeight() */ + mGap), -1, -1);
+            //mIndicatorPopW.getContentView().measure(0, 0);
+            if (mSeekBar.ismR2L()) {
+                mIndicatorPopW.update(mSeekBar, -(int) (touchX + mIndicatorPopW.getContentView().getMeasuredWidth() / 2),
+                        -(mSeekBar.getMeasuredHeight() + mIndicatorPopW.getContentView().getMeasuredHeight() - mSeekBar.getPaddingTop()
+                                /*- mSeekBar.getTextHeight() */ + mGap), -1, -1);
+            }
+            else {
+                mIndicatorPopW.getContentView().measure(0, 0);
+                mIndicatorPopW.update(mSeekBar, (int) (touchX - mIndicatorPopW.getContentView().getMeasuredWidth() / 2),
+                        -(mSeekBar.getMeasuredHeight() + mIndicatorPopW.getContentView().getMeasuredHeight() - mSeekBar.getPaddingTop()
+                                /*- mSeekBar.getTextHeight() */ + mGap), -1, -1);
+            }
             adjustArrow(touchX);
         }
     }
@@ -250,10 +259,16 @@ public class Indicator {
         }
         refreshProgressText();
         if (mIndicatorPopW != null) {
-            mIndicatorPopW.getContentView().measure(0, 0);
-            mIndicatorPopW.showAsDropDown(mSeekBar, (int) (touchX - mIndicatorPopW.getContentView().getMeasuredWidth() / 2f),
-                    -(mSeekBar.getMeasuredHeight() + mIndicatorPopW.getContentView().getMeasuredHeight() - mSeekBar.getPaddingTop() /*- mSeekBar.getTextHeight()*/ + mGap));
-            adjustArrow(touchX);
+            if (mSeekBar.ismR2L()) {
+                mIndicatorPopW.showAsDropDown(mSeekBar, -(int) (touchX + mIndicatorPopW.getContentView().getMeasuredWidth() / 2f),
+                        -(mSeekBar.getMeasuredHeight() + mIndicatorPopW.getContentView().getMeasuredHeight() - mSeekBar.getPaddingTop() /*- mSeekBar.getTextHeight()*/ + mGap));
+                adjustArrow(touchX);
+            } else {
+                mIndicatorPopW.getContentView().measure(0, 0);
+                mIndicatorPopW.showAsDropDown(mSeekBar, (int) (touchX - mIndicatorPopW.getContentView().getMeasuredWidth() / 2f),
+                        -(mSeekBar.getMeasuredHeight() + mIndicatorPopW.getContentView().getMeasuredHeight() - mSeekBar.getPaddingTop() /*- mSeekBar.getTextHeight()*/ + mGap));
+                adjustArrow(touchX);
+            }
         }
     }
 
