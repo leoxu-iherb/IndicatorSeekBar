@@ -16,6 +16,8 @@
             android:text="5. ticks_count=6, indicator_stay" />
 
         <com.warkiz.widget.IndicatorStayLayout
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
@@ -23,6 +25,7 @@
 
             <com.warkiz.widget.IndicatorSeekBar
                 android:id="@+id/seek_bar"
+                app:isb_outer_margin_width="32"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:isb_indicator_color="#666666"
@@ -32,7 +35,7 @@
                 app:isb_selected_tick_marks_color="#458500"
                 app:isb_show_tick_marks_type="round_square"
                 app:isb_thumb_color="#458500"
-                app:isb_no_indicator_no_thumb="false"
+                app:isb_no_indicator_no_thumb="true"
                 app:isb_thumb_size="24dp"
                 app:isb_tick_marks_size="4dp"
                 app:isb_tick_marks_size_height_high="16dp"

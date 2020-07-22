@@ -21,6 +21,7 @@
             <enum name="custom" value="4" /><!--choose custom type that you can set the custom indicator layout you want.-->
         </attr>
         <attr name="isb_indicator_color" format="color|reference" /><!-- indicator's color, default #FF4081-->
+        <attr name="isb_outer_margin_width" format="float" /> <!--handle r2l indicator location issue-->
         <attr name="isb_indicator_text_color" format="color|reference" /><!-- indicator's text color, default #FF4081 -->
         <attr name="isb_indicator_text_size" format="dimension|reference" /><!-- indicator's text size, default 14sp-->
         <attr name="isb_indicator_content_layout" format="reference" /><!-- when you set indicator type to custom , you can set ths indicator layout you want-->

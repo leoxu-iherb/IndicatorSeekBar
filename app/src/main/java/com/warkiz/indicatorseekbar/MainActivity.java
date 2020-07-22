@@ -39,7 +39,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
     }
 
     @Override

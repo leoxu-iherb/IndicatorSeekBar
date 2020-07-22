@@ -156,6 +156,7 @@ public class IndicatorSeekBar extends View {
     //thumb text
     private boolean mShowThumbText;//the place where the thumb text show .
     private float mThumbTextY;//the thumb text's drawing Y anchor
+    private float mOuterMarginWidth;//the thumb text's drawing Y anchor
     private int mThumbTextColor;
     private boolean mHideThumb;
     private boolean mAdjustAuto;
@@ -257,6 +258,7 @@ public class IndicatorSeekBar extends View {
         //customized attrs
         mSelectedTickMarksColor = ta.getColor(R.styleable.IndicatorSeekBar_isb_selected_tick_marks_color, builder.indicatorTextColor);
         mUnSelectedTickMarksColor = ta.getColor(R.styleable.IndicatorSeekBar_isb_unselected_tick_marks_color, builder.indicatorTextColor);
+        mOuterMarginWidth = ta.getFloat(R.styleable.IndicatorSeekBar_isb_outer_margin_width, 0);
         boolean noIndicatorNothumb = ta.getBoolean(R.styleable.IndicatorSeekBar_isb_no_indicator_no_thumb, false);
         if (noIndicatorNothumb) {
             isInitState = true;
@@ -1463,9 +1465,9 @@ public class IndicatorSeekBar extends View {
             arrowOffset = -(int) (measuredWidth / 2 - thumbCenterX);
         } else {
             if(mR2L) {
-                indicatorOffset = (int) (mScreenWidth - getThumbCenterX() - measuredWidth / 2);
+                indicatorOffset = (int) (mScreenWidth - getThumbCenterX() - measuredWidth / 2 - SizeUtils.dp2px(mContext, mOuterMarginWidth));
             } else {
-                indicatorOffset = (int) (getThumbCenterX() - measuredWidth / 2);
+                indicatorOffset = (int) (getThumbCenterX() - measuredWidth / 2 );
             }
 
             arrowOffset = 0;
