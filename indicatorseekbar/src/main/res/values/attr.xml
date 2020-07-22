@@ -69,6 +69,7 @@
         <attr name="isb_unselected_tick_marks_color" format="reference|color" /><!--set texts' color, default #FF4081-->
         <attr name="isb_tick_marks_size_height_low" format="dimension|reference" /><!--set the tick height low-->
         <attr name="isb_tick_marks_size_height_high" format="dimension|reference" /><!--set the tick height high-->
+        <attr name="isb_no_indicator_no_thumb" format="boolean" /><!--show the text below tick or not, default false-->
         <attr name="isb_tick_high_marks_array" format="reference" /><!--set the tick height high-->
     </declare-styleable>
 </resources>

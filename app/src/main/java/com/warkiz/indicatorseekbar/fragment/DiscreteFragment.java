@@ -34,13 +34,15 @@ public class DiscreteFragment extends BaseFragment {
     @Override
     protected void initView(View root) {
 
-        IndicatorSeekBar seekBar = root.findViewById(R.id.seek_bar);
+        final IndicatorSeekBar seekBar = root.findViewById(R.id.seek_bar);
         List<Integer> highMarksArr = new ArrayList<>(Arrays.asList(0, 5, 10));
         seekBar.setTickHighMarksArrayInt(highMarksArr);
 //        seekBar.setR2L(true);
         seekBar.setOnSeekChangeListener(new OnSeekChangeListener() {
             @Override
             public void onSeeking(SeekParams seekParams) {
+                seekBar.setInitState(false);
+                seekBar.hideThumb(false);
                 Logger.getLogger("123").log(Level.INFO, "123");
             }
 

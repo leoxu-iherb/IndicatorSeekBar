@@ -54,6 +54,7 @@ import java.util.List;
  */
 
 public class IndicatorSeekBar extends View {
+    private boolean isInitState = false;
     private static final int THUMB_MAX_WIDTH = 30;
     private static final String FORMAT_PROGRESS = "${PROGRESS}";
     private static final String FORMAT_TICK_TEXT = "${TICK_TEXT}";
@@ -158,7 +159,9 @@ public class IndicatorSeekBar extends View {
     private int mThumbTextColor;
     private boolean mHideThumb;
     private boolean mAdjustAuto;
-
+    public void setInitState(boolean initState) {
+        isInitState = initState;
+    }
     public IndicatorSeekBar(Context context) {
         this(context, null);
     }
@@ -254,7 +257,11 @@ public class IndicatorSeekBar extends View {
         //customized attrs
         mSelectedTickMarksColor = ta.getColor(R.styleable.IndicatorSeekBar_isb_selected_tick_marks_color, builder.indicatorTextColor);
         mUnSelectedTickMarksColor = ta.getColor(R.styleable.IndicatorSeekBar_isb_unselected_tick_marks_color, builder.indicatorTextColor);
-
+        boolean noIndicatorNothumb = ta.getBoolean(R.styleable.IndicatorSeekBar_isb_no_indicator_no_thumb, false);
+        if (noIndicatorNothumb) {
+            isInitState = true;
+            mHideThumb = true;
+        }
         int indicatorContentViewId = ta.getResourceId(R.styleable.IndicatorSeekBar_isb_indicator_content_layout, 0);
         if (indicatorContentViewId > 0) {
             mIndicatorContentView = View.inflate(mContext, indicatorContentViewId, null);
@@ -556,6 +563,40 @@ public class IndicatorSeekBar extends View {
             return;
         }
         float thumbCenterX = getThumbCenterX();
+        if (isInitState) {
+            for (int i = 0; i < mTickMarksX.length; i++) {
+                if (mShowTickMarksType == TickMarkType.OVAL) {
+                    canvas.drawCircle(mTickMarksX[i], mProgressTrack.top, mTickRadius, mStockPaint);
+                } else if (mShowTickMarksType == TickMarkType.DIVIDER) {
+                    int rectWidth = SizeUtils.dp2px(mContext, 1);
+                    float dividerTickHeight;
+                    if (thumbCenterX >= mTickMarksX[i]) {
+                        dividerTickHeight = getLeftSideTrackSize();
+                    } else {
+                        dividerTickHeight = getRightSideTrackSize();
+                    }
+                    canvas.drawRect(mTickMarksX[i] - rectWidth, mProgressTrack.top - dividerTickHeight / 2.0f, mTickMarksX[i] + rectWidth, mProgressTrack.top + dividerTickHeight / 2.0f, mStockPaint);
+                } else if (mShowTickMarksType == TickMarkType.SQUARE) {
+                    canvas.drawRect(mTickMarksX[i] - mTickMarksSize / 2.0f, mProgressTrack.top - mTickMarksSize / 2.0f, mTickMarksX[i] + mTickMarksSize / 2.0f, mProgressTrack.top + mTickMarksSize / 2.0f, mStockPaint);
+                }else if (mShowTickMarksType == TickMarkType.ROUND_SQUARE) {
+                    float top = 0, bottom = 0;
+                    if ( mTickHighMarksArrayInt != null && mTickHighMarksArrayInt.contains(i)) {
+                        top = mProgressTrack.top - mTickMarksSizeHeightHigh / 2.0f;
+                        bottom = mProgressTrack.top + mTickMarksSizeHeightHigh / 2.0f;
+                    } else {
+                        top = mProgressTrack.top - mTickMarksSizeHeightLow / 2.0f;
+                        bottom = mProgressTrack.top + mTickMarksSizeHeightLow / 2.0f;
+                    }
+                    canvas.drawRoundRect(
+                            new RectF(mTickMarksX[i] - mTickMarksSize / 2.0f
+                                    , top
+                                    , mTickMarksX[i] + mTickMarksSize / 2.0f
+                                    , bottom)
+                            , 8, 8, mStockPaint);
+                }
+            }
+            return;
+        }
         for (int i = 0; i < mTickMarksX.length; i++) {
             float thumbPosFloat = getThumbPosOnTickFloat();
             if (mTickMarksSweptHide) {
@@ -1396,6 +1437,9 @@ public class IndicatorSeekBar extends View {
         if (!mIndicatorStayAlways || mIndicator == null) {
             return;
         }
+        if (!isInitState) {
+            mIndicatorContentView.setVisibility(VISIBLE);
+        }
         mIndicator.setProgressTextView(getIndicatorTextString());
         mIndicatorContentView.measure(0, 0);
         int measuredWidth = mIndicatorContentView.getMeasuredWidth();
@@ -1574,6 +1618,9 @@ public class IndicatorSeekBar extends View {
      */
     void showStayIndicator() {
         mIndicatorContentView.setVisibility(INVISIBLE);
+        if (isInitState) {
+            return;
+        }
         postDelayed(new Runnable() {
             @Override
             public void run() {
